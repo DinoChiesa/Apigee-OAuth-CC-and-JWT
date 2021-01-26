@@ -1,0 +1,31 @@
+<VerifyJWT name='VerifyJWT-RS256'>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <!-- This policy implicitly retrieves the JWT from the Authorization header. -->
+  <Algorithm>RS256</Algorithm>
+  <PublicKey>
+    <Value ref='rsa_public_key'/>
+  </PublicKey>
+
+  <!--
+      upon failure, goes into fault state, and sets these context variables:
+      fault.name = ExpiredJwt
+      InvalidJwt - not-before-time or issued-at time is invalid, or signature failed
+      InvalidJwtAlgorithm
+      JwtIssuerMismatch
+      JwtAudienceMismatch
+      JwtSubjectMismatch
+      JwtClaimNotPresent
+      jwt.VerifyJWT-RS256.algorithm
+
+      and if the algorithm is valid, sets these variables:
+
+      jwt.VerifyJWT-RS256.decoded.claim.iss
+      jwt.VerifyJWT-RS256.decoded.claim.aud
+      jwt.VerifyJWT-RS256.decoded.claim.exp
+      jwt.VerifyJWT-RS256.expiresIn
+      jwt.VerifyJWT-RS256.expired
+      jwt.VerifyJWT-RS256.valid
+      jwt.VerifyJWT-RS256.decoded.claim.custom-claim-name
+  -->
+
+</VerifyJWT>

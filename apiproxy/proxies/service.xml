@@ -1,0 +1,129 @@
+<ProxyEndpoint name="service">
+  <Description>Service Proxy Endpoint 1</Description>
+  <HTTPProxyConnection>
+    <BasePath>/oauth2-cc-and-jwt/service</BasePath>
+    <Properties/>
+    <VirtualHost>secure</VirtualHost>
+  </HTTPProxyConnection>
+
+  <FaultRules/>
+
+  <PreFlow name="PreFlow">
+    <Request>
+    </Request>
+    <Response>
+      <Step>
+        <Name>AM-CleanResponseHeaders</Name>
+      </Step>
+    </Response>
+  </PreFlow>
+  <PostFlow name="PostFlow">
+    <Request>
+    </Request>
+    <Response>
+    </Response>
+  </PostFlow>
+  <PostClientFlow name="PostClientFlow">
+    <Request>
+    </Request>
+    <Response>
+    </Response>
+  </PostClientFlow>
+
+  <Flows>
+
+    <Flow name="flow1">
+      <!--
+          Invoke with an opaque OAuth token in the Authorization header:
+
+          curl -i \
+            -H "Authorization: Bearer $TOKEN" \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/service/t1
+
+      -->
+      <Condition>(proxy.pathsuffix MatchesPath "/t1") and (request.verb = "GET")</Condition>
+
+      <Request>
+        <Step>
+          <Name>OAuthV2-VerifyAccessToken</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>AM-ServiceResponse</Name>
+        </Step>
+      </Response>
+    </Flow>
+
+    <Flow name="flow2">
+      <!--
+          Invoke with an RS256-signed token in the Authorization header:
+
+          curl -i \
+            -H "Authorization: Bearer $TOKEN" \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/service/t2
+
+      -->
+      <Condition>(proxy.pathsuffix MatchesPath "/t2") and (request.verb = "GET")</Condition>
+      <Request>
+        <Step>
+          <Name>AM-SigningKeys</Name>
+        </Step>
+        <Step>
+          <Name>VerifyJWT-RS256</Name>
+        </Step>
+        <Step>
+          <Name>VerifyAPIKey-Flow2</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>AM-ServiceResponse</Name>
+        </Step>
+      </Response>
+
+    </Flow>
+
+    <Flow name="flow3">
+      <!--
+          Invoke with an HS256-signed token in the Authorization header:
+
+          curl -i \
+            -H "Authorization: Bearer $TOKEN" \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/service/t3
+
+      -->
+      <Condition>(proxy.pathsuffix MatchesPath "/t3") and (request.verb = "GET")</Condition>
+      <Request>
+        <Step>
+          <Name>AM-SigningKeys</Name>
+        </Step>
+        <Step>
+          <Name>VerifyJWT-HS256</Name>
+        </Step>
+        <Step>
+          <Name>VerifyAPIKey-Flow3</Name>
+        </Step>
+      </Request>
+      <Response>
+        <Step>
+          <Name>AM-ServiceResponse</Name>
+        </Step>
+      </Response>
+    </Flow>
+
+    <Flow name="unknown request">
+      <Request>
+        <Step>
+          <Name>RF-UnknownRequest</Name>
+        </Step>
+      </Request>
+      <Response>
+      </Response>
+    </Flow>
+
+  </Flows>
+
+  <RouteRule name="NoRouteRule"/>
+
+</ProxyEndpoint>

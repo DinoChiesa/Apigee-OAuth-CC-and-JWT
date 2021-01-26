@@ -1,0 +1,4 @@
+<VerifyAPIKey name='VerifyAPIKey-Flow3'>
+  <!-- refers to a variable set by the preceding VerifyJWT policy -->
+  <APIKey ref='jwt.VerifyJWT-HS256.decoded.claim.sub'/>
+</VerifyAPIKey>

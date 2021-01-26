@@ -1,0 +1,10 @@
+<APIProxy revision='1' name='oauth2-cc-and-jwt'>
+  <ConfigurationVersion minorVersion='0' majorVersion='4'/>
+  <CreatedAt>1458959730864</CreatedAt>
+  <CreatedBy>dino</CreatedBy>
+  <Description>Dispense OAuth v2.0 Bearer tokens for client_credentials grant_type. Two forms of token: Opaque tokens and JWT.</Description>
+  <DisplayName>oauth2-cc-and-jwt</DisplayName>
+  <LastModifiedAt>1484879572062</LastModifiedAt>
+  <LastModifiedBy>orgAdmin</LastModifiedBy>
+  <TargetEndpoints/>
+</APIProxy>

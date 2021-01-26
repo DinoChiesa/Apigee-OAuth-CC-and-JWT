@@ -1,0 +1,31 @@
+<GenerateJWT name='GenerateJWT-HS256'>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+
+  <Algorithm>HS256</Algorithm>
+
+  <SecretKey>
+    <Value ref='private.secret_key'/>
+    <Id ref='secret_key_id'/>
+  </SecretKey>
+
+  <!-- The referenced variable holds the client_id that was authenticated by the
+       preceding OAuthv2 policy. -->
+  <Subject ref="apigee.client_id" />
+
+  <!-- The jwt_issuer variable has been set by the AM-SigningKeys policy. It can
+       hold any value, but in this case, it identifies "this proxy". -->
+  <Issuer ref='jwt_issuer'/>
+
+  <!-- note: the lifetime of the JWT is independent of the lifetime of the
+       opaque OAuth token. Coincidentally, this policy uses 30 minutes, just as
+       the OAuthV2-GenerateAccessToken-CC-NoResponse policiy uses. But there
+       is no requirement that they be the same. -->
+  <ExpiresIn>30m</ExpiresIn>
+
+  <AdditionalClaims>
+    <!-- this refers to a flow variable set by a preceding policy. -->
+    <Claim name='opaque-token' ref='oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.access_token'/>
+  </AdditionalClaims>
+
+  <OutputVariable>output_jwt</OutputVariable>
+</GenerateJWT>

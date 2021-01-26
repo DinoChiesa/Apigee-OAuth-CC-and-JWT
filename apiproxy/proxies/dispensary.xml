@@ -1,0 +1,218 @@
+<ProxyEndpoint name='dispensary'>
+  <Description>the endpoint for dispensing tokens of different types via client-credentials</Description>
+  <HTTPProxyConnection>
+    <BasePath>/oauth2-cc-and-jwt/dispensary</BasePath>
+    <VirtualHost>secure</VirtualHost>
+  </HTTPProxyConnection>
+
+  <FaultRules/>
+
+  <PreFlow name='PreFlow'>
+      <Request/>
+      <Response/>
+  </PreFlow>
+  <PostFlow name='PostFlow'>
+      <Request/>
+      <Response>
+        <Step>
+          <Name>AM-CleanResponseHeaders</Name>
+        </Step>
+      </Response>
+  </PostFlow>
+
+  <Flows>
+    <!-- All of the flows here dispense opaque tokens for OAuth2.0, for
+         client_credentials grant_type.  Each flow does it slightly differently.
+    -->
+
+    <Flow name='token1a'>
+      <Description>token endpoint #1a</Description>
+      <Condition>(proxy.pathsuffix MatchesPath "/token1a") and (request.verb = "POST")</Condition>
+      <!--
+          Basic "standard" client_credentials grant. An example request is like this:
+
+          curl -i -X POST -H 'content-type: application/x-www-form-urlencoded' \
+            -u ${client_id}:${client_secret} \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/dispensary/token1a \
+            -d 'grant_type=client_credentials'
+
+          The resulting token will be opaque, and have an expiry. The
+          GenerateAccesstoken policy implicitly generates the response.
+      -->
+      <Request>
+        <Step>
+          <!-- Validation of the inbound request. Is the required form
+               param present? -->
+          <Condition>request.formparam.grant_type != "client_credentials"</Condition>
+          <Name>RF-InvalidGrantType</Name>
+        </Step>
+      </Request>
+
+      <Response>
+        <Step>
+          <!-- This policy implicitly validates the client credentials, and if
+               valid, generates a token, and then generates a response
+               containing that token, immediately. -->
+          <Name>OAuthV2-GenerateAccessToken-CC</Name>
+        </Step>
+        <Step>
+          <Name>JS-GroomTokenResponse</Name>
+          <Condition>request.formparam.grant_type = "client_credentials"</Condition>
+        </Step>
+      </Response>
+
+    </Flow>
+
+
+    <Flow name='token1b'>
+      <Description>token endpoint #1b</Description>
+      <Condition>(proxy.pathsuffix MatchesPath "/token1b") and (request.verb = "POST")</Condition>
+      <!--
+          Same "standard" client_credentials grant. An example request is like this:
+
+          curl -i -X POST -H 'content-type: application/x-www-form-urlencoded' \
+            -u ${client_id}:${client_secret} \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/dispensary/token1b \
+            -d 'grant_type=client_credentials'
+
+          The resulting token here is opaque, will have an expiry, just as with
+          the /token1 flow. The difference here: the API Proxy "manually"
+          assembles the response.
+      -->
+      <Request>
+        <Step>
+          <!-- Validation of the inbound request. Is the required form
+               param present? -->
+          <Condition>request.formparam.grant_type != "client_credentials"</Condition>
+          <Name>RF-InvalidGrantType</Name>
+        </Step>
+      </Request>
+
+      <Response>
+        <Step>
+          <!-- This policy implicitly validates the client credentials, and if
+               valid, generates a token, and then stores that token and other
+               information about the token in a set of flow variables.
+               We can then generate a JWT containing that information. -->
+          <Name>OAuthV2-GenerateAccessToken-CC-NoResponse</Name>
+        </Step>
+
+        <Step>
+          <Name>JS-Format-Times-For-Explicit-Response</Name>
+        </Step>
+        <Step>
+          <Name>AM-Explicit-Opaque-Token-Response</Name>
+        </Step>
+      </Response>
+
+    </Flow>
+
+
+    <Flow name='token2'>
+      <Description>token endpoint #2</Description>
+      <Condition>(proxy.pathsuffix MatchesPath "/token2") and (request.verb = "POST")</Condition>
+      <!--
+          Same "standard" client_credentials grant. An example request is like this:
+
+          curl -i -X POST -H 'content-type: application/x-www-form-urlencoded' \
+            -u ${client_id}:${client_secret} \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/dispensary/token2 \
+            -d 'grant_type=client_credentials'
+
+          But the "backend", the Apigee side, is different.
+          The resulting token here will be a JWT, signed with RS256.
+      -->
+      <Request>
+        <Step>
+          <!-- Validation of the inbound request. Is the required form
+               param present? -->
+          <Condition>request.formparam.grant_type != "client_credentials"</Condition>
+          <Name>RF-InvalidGrantType</Name>
+        </Step>
+      </Request>
+
+      <Response>
+        <Step>
+          <!-- This policy implicitly validates the client credentials, and if
+               valid, generates a token, and then stores that token and other
+               information about the token in a set of flow variables.
+               We can then generate a JWT containing that information. -->
+          <Name>OAuthV2-GenerateAccessToken-CC-NoResponse</Name>
+        </Step>
+
+        <Step>
+          <Name>AM-SigningKeys</Name>
+        </Step>
+
+        <Step>
+          <Name>GenerateJWT-RS256</Name>
+        </Step>
+
+        <Step>
+          <Name>AM-Explicit-JWT-Response</Name>
+        </Step>
+      </Response>
+
+    </Flow>
+
+    <Flow name='token3'>
+      <Description>token endpoint #3</Description>
+      <Condition>(proxy.pathsuffix MatchesPath "/token3") and (request.verb = "POST")</Condition>
+      <!--
+          Same "standard" client_credentials grant. An example request is like this:
+
+          curl -i -X POST -H 'content-type: application/x-www-form-urlencoded' \
+            -u ${client_id}:${client_secret} \
+            https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/dispensary/token3 \
+            -d 'grant_type=client_credentials'
+
+          The resulting token here will be a JWT, signed with HS256.
+      -->
+      <Request>
+        <Step>
+          <!-- Validation of the inbound request. Is the required form
+               param present? -->
+          <Condition>request.formparam.grant_type != "client_credentials"</Condition>
+          <Name>RF-InvalidGrantType</Name>
+        </Step>
+      </Request>
+
+      <Response>
+        <Step>
+          <!-- This policy implicitly validates the client credentials, and if
+               valid, generates a token, and then stores that token and other
+               information about the token in a set of flow variables.
+               We can then generate a JWT containing that information. -->
+          <Name>OAuthV2-GenerateAccessToken-CC-NoResponse</Name>
+        </Step>
+
+        <Step>
+          <Name>AM-SigningKeys</Name>
+        </Step>
+
+        <Step>
+          <Name>GenerateJWT-HS256</Name>
+        </Step>
+
+        <Step>
+          <Name>AM-Explicit-JWT-Response</Name>
+        </Step>
+      </Response>
+
+    </Flow>
+
+    <Flow name='unknown request'>
+      <Request>
+        <Step><Name>RF-UnknownRequest</Name></Step>
+      </Request>
+      <Response/>
+    </Flow>
+
+  </Flows>
+
+  <!-- This is a "loopback proxy". There is no backend target. Responses for
+       oauth token generation and revocation are direct from this API proxy.
+  -->
+  <RouteRule name='NoRouteRule'/>
+
+</ProxyEndpoint>

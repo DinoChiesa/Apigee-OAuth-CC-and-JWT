@@ -1,0 +1,43 @@
+<OAuthV2 name='OAuthV2-GenerateAccessToken-CC-NoResponse'>
+  <Operation>GenerateAccessToken</Operation>
+  <!--
+      ExpiresIn, in milliseconds. The ref is optional. The explicitly specified
+      value is the default, when the variable reference cannot be resolved.
+      1800000 = 30 minutes
+      2400000 = 40 minutes
+      3600000 = 60 minutes
+  -->
+  <ExpiresIn ref='flow.variable'>1800000</ExpiresIn>
+
+  <SupportedGrantTypes>
+    <!--
+        for client_credentials, the client_id and client_secret must be
+        passed via the Basic Auth header, per the OAuthV2 specification.
+    -->
+    <GrantType>client_credentials</GrantType>
+  </SupportedGrantTypes>
+
+  <!-- variable that specifies where to find the requested grant type -->
+  <GrantType>request.formparam.grant_type</GrantType>
+
+  <Attributes>
+    <Attribute name='grant_type'
+               ref='request.formparam.grant_type'
+               display='true'>UNDEFINED</Attribute>
+  </Attributes>
+
+  <GenerateResponse enabled='false'/>
+  <!--
+      With <GenerateResponse enabled='false'/>,
+      the policy sets these flow variables upon success:
+
+      oauthv2accesstoken.POLICYNAME.access_token
+      oauthv2accesstoken.POLICYNAME.token_type
+      oauthv2accesstoken.POLICYNAME.expires_in
+      oauthv2accesstoken.POLICYNAME.issued_at
+
+      It is up to the API Proxy to explicitly generate a response payload for
+      Apigee to send back to the client.
+  -->
+
+</OAuthV2>

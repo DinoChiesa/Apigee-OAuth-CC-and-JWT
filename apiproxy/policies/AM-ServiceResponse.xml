@@ -1,0 +1,13 @@
+<AssignMessage name='AM-ServiceResponse'>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <Set>
+    <StatusCode>200</StatusCode>
+    <ReasonPhrase>OK</ReasonPhrase>
+    <Payload contentType='application/json'>{
+  "status" : "ok",
+  "flow" : "{current.flow.name}"
+}
+</Payload>
+  </Set>
+
+</AssignMessage>

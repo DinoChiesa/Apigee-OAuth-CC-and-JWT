@@ -1,0 +1,86 @@
+<AssignMessage name='AM-SigningKeys'>
+
+  <!-- This example uses a contrived keypair, hardcoded into this policy. You
+       would never do this in practice. Private keys are secrets; you need to
+       store them in the encrypted KVM to prevent operators from casually
+       viewing the key.  But this approach sufficies for an example.
+
+       I generated this keypair via https://dinochiesa.github.io/jwt/ but
+       you can use any tool, like openssl, to generate keypairs.
+  -->
+
+  <AssignVariable>
+    <!-- using the "private." prefix for the variable name prevents this key
+         from being viewed in Apigee Trace. -->
+    <Name>private.rsa_private_key</Name>
+    <Value>
+      -----BEGIN PRIVATE KEY-----
+      MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkcCdv6bI8ZRfg
+      624yn83Xzb1z4jRYrY4kF3BahG4onrq08rIgV8ReNEdWJU4Y7jaD6rB1R4o8kibL
+      GPXDp80oc6aMJPt905OjHiUBxPcFvIL3PI+vrSR08leA9ltSK+vn7vQoqQaF+2EV
+      BSPP8e8oDrViPXy7f3KlPWbjj2sr0/AXznUIhn2f95UhCjI+0YN1YXR9BPo7LuJR
+      8HFxecUzEoogIF/l4v5y1Vq6qMj5KLDPEiMg9h45cFZwvl7lPnAYgWizwH3P0sur
+      b+Hd9viD7pn64R0Qg9v9E0AfP2xxgON47UKfIeiUncGf+U4Tv0yO6WYIVqQqVnVJ
+      7HWBi2jrAgMBAAECggEAONCFV737drGJIA3IC9a6BNORnz3rTy5b+61bhPLXqtI4
+      +TcXg2Q/tTrD4QhPpP59OHP4lvTqVsY6gBa2J21NTaozw50thYp6KrRKHgPjQ4ig
+      CXNTw+ODQqLOyACWidwiDIc7tea8mcNChkQ53Ome84ytb+2FsLS2tE/0QjC12zS3
+      Ly5pYiEI0LnYixioeJgFJfXJKlt8FfJCVEKHISwh4F2z8jq9vlhJKdlc4HctZXP8
+      j1MZ6hNRPVWGgt+qoIAGAeG4ODdGukKa2K1uA+SzL0SJJBPaRWFuWK0sSuz+okxm
+      8/DY0lyZWPCh2yRmDXv45a323G8xrf/aCPsmlCrdUQKBgQDezqMDi0L47929q5w1
+      wTHbPHYOKZuRqCMHgSmUKykXdBfnIReE17KwQL6IkyjaiAhY4dqbZ3prErtyOvSQ
+      hvy5lj12CySjdcIUpfOWS9LkDJnIJ5HOGC0cZn0UGyRUL0fJU8sFuWGsNXQhLB0q
+      AZcR08xgc9hwiV9h0R42iPmVmwKBgQC873PTwIoBEHaIpzY+L2Tnijx/4XRb0oeH
+      sLuFNme1MkvHlnpE0x3AtCHhhruCGpO8Ewyt0SeX5axiu6gh1gnhOQZTPmRdhoVm
+      SkKt52laxVUTNePCYxWxZ2+jC/RSP3EC8SK0P8SAWL3AFqFma2pHS6KmE5c5udqu
+      dSVq7fLW8QKBgQDWXL5vsXOM59JSIqKXAToDcQcwFw3qtHaHSNiFCoVtYC+DGs5y
+      68eqVZA6/EKJBenqAdn+PC+Ghq47d8dGqejKcWbOhGgKsEg673MNPgQ3jnwCGzfn
+      rlDwixZ52qc4K4kIhQrGhhYXxhHlvHiOqpr69ugiQDKUC0buaHCGDYD7UwKBgAYm
+      MPniWVuBgqod7xkFB961VBTBbL0UVA7phKDoTWXLVkYPsrkMufosorGpZe7tGIPV
+      huMdXJGICx1HiEhZpAatiXQqIrAckbjrj9IDJx2qMIOojFomSW11tV90IyaOJAp5
+      eKyvKqEWwk4/Lk+cDWB2qLuJBbH+R4zICUi6p92xAoGAIX5fi7MdOlXdWYHJCr94
+      /66W9E9qtZsx8A0SzWGpPK/7NUTKif+M2om5IYWFgObUOWlIo5rbgmzuAsnSWneB
+      FJj96BYZ+dlVcG609YXsUUEkOqx4aolwF/GCIi/+JLfHwmVdXEys/cwKxx47xCoT
+      6YarQzCzaDTs+uJNWqBp/fQ=
+      -----END PRIVATE KEY-----
+    </Value>
+  </AssignVariable>
+
+  <AssignVariable>
+    <Name>rsa_public_key</Name>
+    <Value>
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApHAnb+myPGUX4OtuMp/N
+      1829c+I0WK2OJBdwWoRuKJ66tPKyIFfEXjRHViVOGO42g+qwdUeKPJImyxj1w6fN
+      KHOmjCT7fdOTox4lAcT3BbyC9zyPr60kdPJXgPZbUivr5+70KKkGhfthFQUjz/Hv
+      KA61Yj18u39ypT1m449rK9PwF851CIZ9n/eVIQoyPtGDdWF0fQT6Oy7iUfBxcXnF
+      MxKKICBf5eL+ctVauqjI+SiwzxIjIPYeOXBWcL5e5T5wGIFos8B9z9LLq2/h3fb4
+      g+6Z+uEdEIPb/RNAHz9scYDjeO1CnyHolJ3Bn/lOE79MjulmCFakKlZ1Sex1gYto
+      6wIDAQAB
+      -----END PUBLIC KEY-----
+    </Value>
+  </AssignVariable>
+
+  <AssignVariable>
+    <Name>rsa_key_id</Name>
+    <Value>rsa-20210126-1318</Value>
+  </AssignVariable>
+
+  <AssignVariable>
+    <Name>private.secret_key</Name>
+    <Value>20210126-CB025110-9B46-4DD6-8D61-7A5AFDE38B0E</Value>
+  </AssignVariable>
+
+  <AssignVariable>
+    <Name>secret_key_id</Name>
+    <Value>hmac-20210126-1340</Value>
+  </AssignVariable>
+
+  <!-- This variable gets set with a "template" that refers to other variables.
+       This reference document describes the "standard" variables.
+  -->
+  <AssignVariable>
+    <Name>jwt_issuer</Name>
+    <Template>{client.scheme}://{request.header.host}{proxy.basepath}{proxy.pathsuffix}</Template>
+  </AssignVariable>
+
+</AssignMessage>

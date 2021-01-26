@@ -1,0 +1,14 @@
+<AssignMessage name='AM-Explicit-JWT-Response'>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <Set>
+    <StatusCode>200</StatusCode>
+    <ReasonPhrase>OK</ReasonPhrase>
+    <!-- This template refers to a flow variable that was set by the preceding
+         GenerateJWT policy. -->
+    <Payload contentType='application/json'>{
+  "access_token" : "{output_jwt}",
+  "token_type" : "Bearer"
+}
+</Payload>
+  </Set>
+</AssignMessage>

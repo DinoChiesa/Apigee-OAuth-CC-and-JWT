@@ -1,0 +1,20 @@
+<AssignMessage name='AM-Explicit-Opaque-Token-Response'>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <Set>
+    <StatusCode>200</StatusCode>
+    <ReasonPhrase>OK</ReasonPhrase>
+    <!-- Things inside the curly braces refer to "flow variables" that have
+         been set by previous policies. Some by the OAuthV2 policy, and some
+         by the JavaScript policy.
+    -->
+    <Payload contentType='application/json'>{
+  "access_token" : "{oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.access_token}",
+  "issued_at" : {oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.issued_at},
+  "expires_in" : {oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.expires_in},
+  "token_type" : "Bearer",
+  "issued" : "{issued_string}",
+  "expires" : "{expiry_string}"
+}
+</Payload>
+  </Set>
+</AssignMessage>

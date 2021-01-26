@@ -1,0 +1,6 @@
+<Javascript name='JS-Format-Times-For-Explicit-Response' timeLimit='200' >
+  <Properties>
+    <Property name='POLICYNAME'>OAuthV2-GenerateAccessToken-CC-NoResponse</Property>
+  </Properties>
+  <ResourceURL>jsc://formatTimesAsString.js</ResourceURL>
+</Javascript>
