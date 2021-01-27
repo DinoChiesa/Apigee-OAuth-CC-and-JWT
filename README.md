@@ -11,7 +11,7 @@ Depending on the set of policies Apigee executes, Apigee can return an opaque to
 1. Import the proxy into any Apigee organization. The name will be 'oauth2-cc-and-jwt'.
 
 2. Create an API product. The API product normally wraps API proxies with metadata.
-You should add _this proxy_ to the API Product.
+   You should add _this proxy_ to the API Product.
 
 3. Create a Developer within Apigee
 
@@ -57,7 +57,7 @@ To obtain a token, send in a POST request, as described in [RFC 6749 Section 4.4
 
 There are 4 distinct "flows" on [the
 dispensary](./apiproxy/proxies/dispensary.xml). Each accepts the same kind of
-input request; each validates the inbound client credentials.  And each behaves
+input request; each validates the inbound client credentials. And each behaves
 a little differently with its response.
 
 | flow name | description                                                                |
@@ -122,7 +122,7 @@ bearer token. Either opaque tokens or JWT is fine, or some other form of
 (perhaps non-standard) token would also comply with the OAuth specification.
 While OAuth does not describe how the tokens should be formed, it does describe
 the messages that flow between client application and token dispensary, and
-between client application and service endpoint.  And it is easy to send either
+between client application and service endpoint. And it is easy to send either
 an opaque token or a JWT within an Authorization header as a bearer token.
 
 While the opaque token and JWT can both be used as OAuth bearer tokens, there
@@ -134,7 +134,7 @@ are tradeoffs.
   amortizing the the cost of the I/O over many multiple calls. The expected
   pattern of usage is: an app obtains a token once, then uses it many
   times. Perhaps thousands, or tens of thousands of times. Only the first use
-  requires I/O; the rest of those calls can be memory lookups.  (It's not just a
+  requires I/O; the rest of those calls can be memory lookups. (It's not _just_ a
   lookup; it's a lookup plus a check of the token expiry time, and checks on
   other attributes on the token. But the lookup is the expensive part.)  In
   contrast, Validating a JWT requires checking a digital signature. This
@@ -149,7 +149,7 @@ are tradeoffs.
   only a party that has access to the token store can validate such a token. The
   service endpoint must be either the same as the token dispensary endpoint, or
   it must contact the token dispensary endpoint with each authorized request in
-  order to validate that token.  In contrast, the JWT can be validated by any
+  order to validate that token. In contrast, the JWT can be validated by any
   part that has access to the verification key. This can be a public key in the
   case of algorithms like RS256 or PS256, or it can be a secret key in the case
   of signing algorithms like HS256. Validating JWT can be done without I/O from
