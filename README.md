@@ -31,7 +31,7 @@ installed on your workstation.
 ```
 cd tools
 npm install
-node node ./provision.js -v -o $ORG -e $ENV
+node ./provision.js -v -o $ORG -e $ENV
 ```
 
 It should prompt you for your Apigee username and password. It will then perform
@@ -110,7 +110,7 @@ that tool to "reset" your organization and delete all the example assets. Like t
 
 ```
 cd tools
-node node ./provision.js -v -o $ORG -e $ENV -R
+node ./provision.js -v -o $ORG -e $ENV -R
 ```
 
 
