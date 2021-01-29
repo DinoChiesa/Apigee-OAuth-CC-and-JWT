@@ -6,6 +6,12 @@ for the client_credentials grant_type.
 Depending on the set of policies Apigee executes, Apigee can return an opaque token, or a JWT.
 
 
+## Disclaimer
+
+This example is not an official Google product, nor is it part of an
+official Google product.
+
+
 ## Preparing to Use the Proxy
 
 1. Import the proxy into any Apigee organization. The name will be 'oauth2-cc-and-jwt'.
@@ -156,3 +162,15 @@ are tradeoffs.
   a token store, but Key management is a factor. If you use JWT, you must
   consider how to manage the signing keys. This includes key rotation, as well
   as publishing a list of public keys if you use RS/PS algorithms.
+
+## Support
+
+This example open-source configuration, and is not a supported part of Apigee.
+If you need assistance using it, you can try inquiring on [The Apigee Community
+Site](https://community.apigee.com).  There is no service-level guarantee for
+responses to inquiries regarding this example.
+
+## License
+
+This material is Copyright 2020 Google LLC.
+and is licensed under the [Apache 2.0 License](LICENSE).
