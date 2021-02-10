@@ -22,8 +22,7 @@
 
   <Attributes>
     <Attribute name='grant_type'
-               ref='request.formparam.grant_type'
-               display='true'>UNDEFINED</Attribute>
+               ref='request.formparam.grant_type' display='true'>UNDEFINED</Attribute>
   </Attributes>
 
   <GenerateResponse enabled='false'/>
@@ -35,6 +34,8 @@
       oauthv2accesstoken.POLICYNAME.token_type
       oauthv2accesstoken.POLICYNAME.expires_in
       oauthv2accesstoken.POLICYNAME.issued_at
+      oauthv2accesstoken.POLICYNAME.api_product_list_json
+       ....and more....
 
       It is up to the API Proxy to explicitly generate a response payload for
       Apigee to send back to the client.

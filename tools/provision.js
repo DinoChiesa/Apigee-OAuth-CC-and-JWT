@@ -2,10 +2,10 @@
 /*jslint node:true */
 // provisioningTool.js
 // ------------------------------------------------------------------
-// provision an Apigee Proxy, API Product, Developer, and App
+// provision an Apigee Proxy, two API Products, a Developer, and an App
 // for the OAuthV2 CC-and-JWT Example. Or de-provision.
 //
-// Copyright 2017-2020 Google LLC.
+// Copyright 2017-2021 Google LLC.
 //
 
 /* jshint esversion: 9, strict:implied */
@@ -22,7 +22,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// last saved: <2021-January-26 14:53:52>
+// last saved: <2021-February-10 14:57:34>
 
 const apigeejs   = require('apigee-edge-js'),
       common     = apigeejs.utility,
@@ -31,7 +31,7 @@ const apigeejs   = require('apigee-edge-js'),
       path       = require('path'),
       sprintf    = require('sprintf-js').sprintf,
       Getopt     = require('node-getopt'),
-      version    = '20210126-1426',
+      version    = '20210210-1440',
       getopt     = new Getopt(common.commonOptions.concat([
         ['R' , 'reset', 'Optional. Reset, delete all the assets previously created by this script'],
         ['e' , 'env=ARG', 'the Edge environment to use for this demonstration. ']
@@ -43,6 +43,8 @@ function random(min, max) {
   let delta = max - min;
   return Math.floor(Math.random() * delta) + min;
 }
+
+let easyClone = (obj) => JSON.parse(JSON.stringify(obj));
 
 console.log(
   'Apigee CC-and-JWT OAuth Example Provisioning tool, version: ' + version + '\n' +
@@ -103,7 +105,15 @@ apigee.connect(connectOptions)
                    console.log(e);
                  }
                }))
-        .then( _ => org.products.del(delOptions.product)
+        .then( _ =>
+               org.products.del({productName: delOptions.product.productName + '-1'})
+               .catch(e => {
+                 if ( ! e.result || e.result.code != 'keymanagement.service.apiproduct_doesnot_exist' ) {
+                   console.log(e);
+                 }
+               }))
+        .then( _ =>
+               org.products.del({productName: delOptions.product.productName + '-2'})
                .catch(e => {
                  if ( ! e.result || e.result.code != 'keymanagement.service.apiproduct_doesnot_exist' ) {
                    console.log(e);
@@ -146,13 +156,14 @@ apigee.connect(connectOptions)
             }
           },
           developerapps: {
-            get: {
+            getArgs: {
               developerEmail : constants.discriminators.developer
             },
             create: {
               developerEmail : constants.discriminators.developer,
               appName        : constants.discriminators.developerapp,
-              apiProduct     : constants.discriminators.product,
+              apiProduct     : [constants.discriminators.product +'-1',
+                                constants.discriminators.product +'-2'],
               description    : 'Test Product for CC-and-JWT Example',
               attributes     : { access: 'public', note: constants.note },
               approvalType   : 'auto'
@@ -160,9 +171,9 @@ apigee.connect(connectOptions)
           }
         };
 
-    function conditionallyCreateEntity(entityType) {
+    function conditionallyCreateEntity(entityType, suffix) {
       let collectionName = entityType + 's';
-      return org[collectionName].get(options[collectionName].get || {})
+      return org[collectionName].get(options[collectionName].getArgs || {})
         .then( result => {
           //console.log('GET Result: ' + JSON.stringify(result));
           if (result.indexOf(constants.discriminators[entityType])>=0) {
@@ -174,17 +185,22 @@ apigee.connect(connectOptions)
             }
             return Promise.resolve(result) ;
           }
-          if (opt.options.verbose) {
-            console.log('CREATE: ' + JSON.stringify(options[collectionName].create));
+          let args = easyClone(options[collectionName].create);
+          if (suffix) {
+            args.productName = args.productName + '-' + suffix;
           }
-          return org[collectionName].create(options[collectionName].create);
+          if (opt.options.verbose) {
+            console.log('CREATE: ' + JSON.stringify(args));
+          }
+          return org[collectionName].create(args);
         });
     }
 
     return Promise.resolve({})
       .then( _ => org.proxies.import({source:proxySource}))
       .then( r => org.proxies.deploy({name:r.name, revision:r.revision, environment: opt.options.env}))
-      .then( _ => conditionallyCreateEntity('product'))
+      .then( _ => conditionallyCreateEntity('product', 1))
+      .then( _ => conditionallyCreateEntity('product', 2))
       .then( _ => conditionallyCreateEntity('developer'))
       .then( _ => conditionallyCreateEntity('developerapp'))
       .then( result => {
@@ -197,7 +213,7 @@ apigee.connect(connectOptions)
         console.log('Example Calls:');
         console.log('============================');
         console.log();
-        console.log('curl -i -X POST -d "grant_type=client_credentials" "https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/dispensary/token1a" -u "${client_id}:${client_secret}"');
+        console.log('curl -i -X POST -u "${client_id}:${client_secret}" -d "grant_type=client_credentials" "https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/dispensary/token1a"');
         console.log();
         console.log('curl -i -X GET  "https://$ORG-$ENV.apigee.net/oauth2-cc-and-jwt/service/t1" -H "Authorization: Bearer ${TOKEN}"');
 

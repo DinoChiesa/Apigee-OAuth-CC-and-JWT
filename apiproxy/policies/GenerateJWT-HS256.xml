@@ -25,6 +25,7 @@
   <AdditionalClaims>
     <!-- this refers to a flow variable set by a preceding policy. -->
     <Claim name='opaque-token' ref='oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.access_token'/>
+    <Claim name='apiproducts' array='true' ref='reformed_product_list'/>
   </AdditionalClaims>
 
   <OutputVariable>output_jwt</OutputVariable>

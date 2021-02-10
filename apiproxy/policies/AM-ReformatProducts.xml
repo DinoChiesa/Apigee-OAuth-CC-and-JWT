@@ -1,0 +1,8 @@
+<AssignMessage name='AM-ReformatProducts'>
+  <!-- this bit just reformats the list of apiproducts so that it can be used in the GenerateJWT policy. -->
+  <AssignVariable>
+    <Name>reformed_product_list</Name>
+    <Template>{substring(oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.api_product_list_json,1,-1)}</Template>
+  </AssignVariable>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>

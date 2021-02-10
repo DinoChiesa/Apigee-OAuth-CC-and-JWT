@@ -109,7 +109,7 @@
 
 
     <Flow name='token2'>
-      <Description>token endpoint #2</Description>
+      <Description>Return a JWT signed with HS256</Description>
       <Condition>(proxy.pathsuffix MatchesPath "/token2") and (request.verb = "POST")</Condition>
       <!--
           Same "standard" client_credentials grant. An example request is like this:
@@ -145,6 +145,10 @@
         </Step>
 
         <Step>
+          <Name>AM-ReformatProducts</Name>
+        </Step>
+
+        <Step>
           <Name>GenerateJWT-RS256</Name>
         </Step>
 
@@ -156,7 +160,7 @@
     </Flow>
 
     <Flow name='token3'>
-      <Description>token endpoint #3</Description>
+      <Description>Return a JWT signed with HS256</Description>
       <Condition>(proxy.pathsuffix MatchesPath "/token3") and (request.verb = "POST")</Condition>
       <!--
           Same "standard" client_credentials grant. An example request is like this:
@@ -188,6 +192,10 @@
 
         <Step>
           <Name>AM-SigningKeys</Name>
+        </Step>
+
+        <Step>
+          <Name>AM-ReformatProducts</Name>
         </Step>
 
         <Step>
