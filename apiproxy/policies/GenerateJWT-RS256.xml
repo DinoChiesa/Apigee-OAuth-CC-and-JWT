@@ -23,10 +23,11 @@
   <ExpiresIn>30m</ExpiresIn>
 
   <AdditionalClaims>
-    <!-- this refers to a flow variable set by preceding policies. -->
-    <Claim name='opaque-token'
-           ref='oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.access_token'/>
+    <!-- these refers to flow variables set by a preceding policies. -->
+    <Claim name='opaque-token' ref='oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.access_token'/>
+    <Claim name='scope-one-value' ref='oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.scope'/>
     <Claim name='apiproducts' array='true' ref='reformed_product_list'/>
+    <Claim name='scopelist' array='true' type='string' ref='reformed_scope'/>
   </AdditionalClaims>
 
   <OutputVariable>output_jwt</OutputVariable>

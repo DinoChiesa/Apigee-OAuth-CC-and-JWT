@@ -22,7 +22,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// last saved: <2021-February-10 14:57:34>
+// last saved: <2021-February-10 16:24:49>
 
 const apigeejs   = require('apigee-edge-js'),
       common     = apigeejs.utility,
@@ -142,6 +142,7 @@ apigee.connect(connectOptions)
               productName  : constants.discriminators.product,
               description  : 'Test Product for CC-and-JWT Example',
               apiResources : [ "/service/**" ],
+              scopes       : [ 'scope-A', 'scope-B', 'scope-C'],
               attributes   : { access: 'public', note: constants.note },
               approvalType : 'auto'
             }

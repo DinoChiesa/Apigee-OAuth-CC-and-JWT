@@ -145,7 +145,7 @@
         </Step>
 
         <Step>
-          <Name>AM-ReformatProducts</Name>
+          <Name>AM-ReformatProperties</Name>
         </Step>
 
         <Step>
@@ -195,7 +195,7 @@
         </Step>
 
         <Step>
-          <Name>AM-ReformatProducts</Name>
+          <Name>AM-ReformatProperties</Name>
         </Step>
 
         <Step>

@@ -9,6 +9,8 @@
   -->
   <ExpiresIn ref='flow.variable'>1800000</ExpiresIn>
 
+  <Scope>scope-A scope-B</Scope>
+
   <SupportedGrantTypes>
     <!--
         for client_credentials, the client_id and client_secret must be

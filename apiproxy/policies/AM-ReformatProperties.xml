@@ -1,0 +1,20 @@
+<AssignMessage name='AM-ReformatProperties'>
+  <!-- this bit just reformats the some of the variables so they can be used in the GenerateJWT policy. -->
+  <AssignVariable>
+    <Name>reformed_product_list</Name>
+    <Template>{substring(oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.api_product_list_json,1,-1)}</Template>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>COMMA</Name>
+    <Value>,</Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>SPACE</Name>
+    <Value> </Value>
+  </AssignVariable>
+  <AssignVariable>
+    <Name>reformed_scope</Name>
+    <Template>{replaceAll(oauthv2accesstoken.OAuthV2-GenerateAccessToken-CC-NoResponse.scope,SPACE,COMMA)}</Template>
+  </AssignVariable>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
