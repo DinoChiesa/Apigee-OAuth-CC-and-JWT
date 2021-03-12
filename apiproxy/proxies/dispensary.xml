@@ -109,7 +109,7 @@
 
 
     <Flow name='token2'>
-      <Description>Return a JWT signed with HS256</Description>
+      <Description>Return a JWT signed with RS256</Description>
       <Condition>(proxy.pathsuffix MatchesPath "/token2") and (request.verb = "POST")</Condition>
       <!--
           Same "standard" client_credentials grant. An example request is like this:
